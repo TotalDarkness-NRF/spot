@@ -27,4 +27,52 @@ impl SettingsModel {
             dispatcher,
         }
     }
+
+    fn state(&self) -> Ref<'_, AppState> {
+        self.app_model.get_state()
+    }
+}
+
+impl SelectionToolsModel for SettingsModel {
+    fn dispatcher(&self) -> Box<dyn ActionDispatcher> {
+        self.dispatcher.box_clone()
+    }
+
+    fn spotify_client(&self) -> Arc<dyn SpotifyApiClient + Send + Sync> {
+        self.app_model.get_spotify()
+    }
+
+    fn selection(&self) -> Option<Box<dyn Deref<Target = SelectionState> + '_>> {
+        let selection = self
+            .app_model
+            .map_state_opt(|s| Some(&s.selection))
+            .filter(|s| s.context == SelectionContext::Queue)?;
+        Some(Box::new(selection))
+    }
+
+    fn tools_visible(&self, _: &SelectionState) -> Vec<SelectionTool> {
+        vec![
+            SelectionTool::Simple(SimpleSelectionTool::SelectAll),
+            SelectionTool::Simple(SimpleSelectionTool::MoveDown),
+            SelectionTool::Simple(SimpleSelectionTool::MoveUp),
+            SelectionTool::Simple(SimpleSelectionTool::Remove),
+        ]
+    }
+
+    fn handle_tool_activated(&self, selection: &SelectionState, tool: &SelectionTool) {
+        match tool {
+            SelectionTool::Simple(SimpleSelectionTool::SelectAll) => {
+            }
+            SelectionTool::Simple(SimpleSelectionTool::Remove) => {
+                self.dispatcher().dispatch(AppAction::DequeueSelection);
+            }
+            SelectionTool::Simple(SimpleSelectionTool::MoveDown) => {
+                self.dispatcher().dispatch(AppAction::MoveDownSelection);
+            }
+            SelectionTool::Simple(SimpleSelectionTool::MoveUp) => {
+                self.dispatcher().dispatch(AppAction::MoveUpSelection);
+            }
+            _ => self.default_handle_tool_activated(selection, tool),
+        };
+    }
 }
