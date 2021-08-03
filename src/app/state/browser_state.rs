@@ -1,7 +1,6 @@
-use super::SettingsState;
 use super::{
     ArtistState, DetailsState, HomeState, PlaylistDetailsState, ScreenName, SearchState,
-    UpdatableState, UserState,
+    SettingsState, UpdatableState, UserState,
 };
 use crate::app::models::*;
 use crate::app::state::AppAction;
