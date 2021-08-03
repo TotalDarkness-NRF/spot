@@ -1,3 +1,4 @@
+use super::SettingsState;
 use super::{
     ArtistState, DetailsState, HomeState, PlaylistDetailsState, ScreenName, SearchState,
     UpdatableState, UserState,
@@ -70,6 +71,7 @@ pub enum BrowserScreen {
     Home(HomeState),
     AlbumDetails(DetailsState),
     Search(SearchState),
+    Settings(SettingsState),
     Artist(ArtistState),
     PlaylistDetails(PlaylistDetailsState),
     User(UserState),
@@ -83,6 +85,7 @@ impl BrowserScreen {
                 BrowserScreen::AlbumDetails(DetailsState::new(id.to_string()))
             }
             ScreenName::Search => BrowserScreen::Search(Default::default()),
+            ScreenName::Settings => BrowserScreen::Settings(SettingsState::default()),
             ScreenName::Artist(id) => BrowserScreen::Artist(ArtistState::new(id.to_string())),
             ScreenName::PlaylistDetails(id) => {
                 BrowserScreen::PlaylistDetails(PlaylistDetailsState::new(id.to_string()))
@@ -96,6 +99,7 @@ impl BrowserScreen {
             Self::Home(state) => state,
             Self::AlbumDetails(state) => state,
             Self::Search(state) => state,
+            Self::Settings(state) => state,
             Self::Artist(state) => state,
             Self::PlaylistDetails(state) => state,
             Self::User(state) => state,
@@ -111,6 +115,7 @@ impl NamedScreen for BrowserScreen {
             Self::Home(state) => &state.name,
             Self::AlbumDetails(state) => &state.name,
             Self::Search(state) => &state.name,
+            Self::Settings(state) => &state.name,
             Self::Artist(state) => &state.name,
             Self::PlaylistDetails(state) => &state.name,
             Self::User(state) => &state.name,

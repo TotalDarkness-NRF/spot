@@ -10,6 +10,7 @@ pub enum ScreenName {
     Home,
     AlbumDetails(String),
     Search,
+    Settings,
     Artist(String),
     PlaylistDetails(String),
     User(String),
@@ -21,6 +22,7 @@ impl ScreenName {
             Self::Home => Cow::Borrowed("home"),
             Self::AlbumDetails(s) => Cow::Owned(format!("album_{}", s)),
             Self::Search => Cow::Borrowed("search"),
+            Self::Settings => Cow::Borrowed("settings"),
             Self::Artist(s) => Cow::Owned(format!("artist_{}", s)),
             Self::PlaylistDetails(s) => Cow::Owned(format!("playlist_{}", s)),
             Self::User(s) => Cow::Owned(format!("user_{}", s)),
@@ -328,6 +330,31 @@ impl UpdatableState for SearchState {
                 self.artist_results = results.artists;
                 vec![BrowserEvent::SearchResultsUpdated]
             }
+            _ => vec![],
+        }
+    }
+}
+
+pub struct SettingsState {
+    pub name: ScreenName,
+    pub query: String,
+}
+
+impl Default for SettingsState {
+    fn default() -> Self {
+        Self {
+            name: ScreenName::Settings,
+            query: "".to_owned(),
+        }
+    }
+}
+
+impl UpdatableState for SettingsState {
+    type Action = BrowserAction;
+    type Event = BrowserEvent;
+
+    fn update_with(&mut self, action: Self::Action) -> Vec<Self::Event> {
+        match action {
             _ => vec![],
         }
     }
