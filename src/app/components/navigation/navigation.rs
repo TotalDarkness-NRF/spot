@@ -108,6 +108,7 @@ impl Navigation {
                 Box::new(self.screen_factory.make_album_details(id.to_owned()))
             }
             ScreenName::Search => Box::new(self.screen_factory.make_search_results()),
+            ScreenName::Settings => Box::new(self.screen_factory.make_settings()),
             ScreenName::Artist(id) => {
                 Box::new(self.screen_factory.make_artist_details(id.to_owned()))
             }
