@@ -71,6 +71,9 @@ pub use window::*;
 mod selection;
 pub use selection::*;
 
+mod settings;
+pub use settings::*;
+
 pub mod utils;
 
 pub mod labels;
