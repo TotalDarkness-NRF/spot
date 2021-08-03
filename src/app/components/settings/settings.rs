@@ -2,7 +2,7 @@ use gladis::Gladis;
 use gtk::prelude::*;
 use std::rc::Rc;
 
-use crate::app::components::{screen_add_css_provider, Component, EventListener, Playlist};
+use crate::app::components::{screen_add_css_provider, Component, EventListener};
 use crate::app::{state::PlaybackEvent, AppEvent};
 
 use super::SettingsModel;
@@ -29,12 +29,10 @@ pub struct Settings {
 impl Settings {
     pub fn new(model: Rc<SettingsModel>) -> Self {
         let widget = SettingsWidget::new();
-        //let playlist = Playlist::new(widget.listbox.clone(), model.clone());
-
         Self {
             widget,
             model,
-            children: vec![/*Box::new(playlist)*/],
+            children: vec![],
         }
     }
 }
