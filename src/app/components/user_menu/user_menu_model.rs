@@ -1,7 +1,7 @@
 use crate::api::clear_user_cache;
-use crate::app::credentials;
 use crate::app::models::{PlaylistDescription, PlaylistSummary};
-use crate::app::state::{LoginAction, PlaybackAction};
+use crate::app::state::{LoginAction, PlaybackAction, ScreenName};
+use crate::app::{credentials, AppEvent, BrowserAction, BrowserEvent};
 use crate::app::{ActionDispatcher, AppModel};
 use std::ops::Deref;
 use std::rc::Rc;
@@ -31,6 +31,11 @@ impl UserMenuModel {
             let _ = clear_user_cache().await;
             Some(LoginAction::Logout.into())
         }));
+    }
+
+    pub fn settings(&self) {
+        self.dispatcher
+            .dispatch(BrowserAction::NavigationPush(ScreenName::Settings).into());
     }
 
     pub fn fetch_user_playlists(&self) {

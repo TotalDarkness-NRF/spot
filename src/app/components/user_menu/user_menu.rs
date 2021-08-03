@@ -49,6 +49,14 @@ impl UserMenu {
             about_action
         });
 
+        action_group.add_action(&{
+            let settings_action = SimpleAction::new("settings", None);
+            settings_action.connect_activate(clone!(@weak model => move |_, _| {
+                model.settings();
+            }));
+            settings_action
+        });
+
         user_button.insert_action_group("menu", Some(&action_group));
 
         Self { user_button, model }
@@ -58,6 +66,9 @@ impl UserMenu {
         let menu = gio::Menu::new();
         // translators: This is a menu entry.
         menu.append(Some(&gettext("About")), Some("menu.about"));
+
+        menu.append(Some(&gettext("Settings")), Some("menu.settings"));
+
         // translators: This is a menu entry.
         menu.append(Some(&gettext("Quit")), Some("app.quit"));
 
