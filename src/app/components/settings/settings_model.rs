@@ -1,18 +1,11 @@
-use gio::prelude::*;
-use gio::SimpleActionGroup;
-use std::cell::Ref;
 use std::ops::Deref;
 use std::rc::Rc;
 use std::sync::Arc;
 
-use crate::app::components::{labels, PlaylistModel, SelectionTool, SelectionToolsModel};
-use crate::app::models::SongDescription;
-use crate::app::models::SongModel;
-use crate::app::state::{
-    PlaybackAction, PlaybackEvent, PlaybackState, PlaylistSource, SelectionAction,
-    SelectionContext, SelectionState,
-};
-use crate::app::{ActionDispatcher, AppAction, AppEvent, AppModel, AppState, ListDiff};
+use crate::app::components::{SelectionTool, SelectionToolsModel};
+use crate::app::state::{SelectionContext, SelectionState};
+use crate::app::{ActionDispatcher, AppAction, AppModel};
+use crate::settings::SpotSettings;
 use crate::{api::SpotifyApiClient, app::components::SimpleSelectionTool};
 
 pub struct SettingsModel {
@@ -28,8 +21,8 @@ impl SettingsModel {
         }
     }
 
-    fn state(&self) -> Ref<'_, AppState> {
-        self.app_model.get_state()
+    pub fn settings(&self) -> &SpotSettings {
+        &self.app_model.settings
     }
 }
 
@@ -61,8 +54,7 @@ impl SelectionToolsModel for SettingsModel {
 
     fn handle_tool_activated(&self, selection: &SelectionState, tool: &SelectionTool) {
         match tool {
-            SelectionTool::Simple(SimpleSelectionTool::SelectAll) => {
-            }
+            SelectionTool::Simple(SimpleSelectionTool::SelectAll) => {}
             SelectionTool::Simple(SimpleSelectionTool::Remove) => {
                 self.dispatcher().dispatch(AppAction::DequeueSelection);
             }

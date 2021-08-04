@@ -1,5 +1,6 @@
 use crate::api::SpotifyApiClient;
 use crate::app::state::*;
+use crate::settings::SpotSettings;
 use ref_filter_map::*;
 use std::cell::{Ref, RefCell};
 use std::sync::Arc;
@@ -11,13 +12,14 @@ pub struct AppServices {
 pub struct AppModel {
     state: RefCell<AppState>,
     services: AppServices,
+    pub settings: SpotSettings,
 }
 
 impl AppModel {
-    pub fn new(state: AppState, spotify_api: Arc<dyn SpotifyApiClient + Send + Sync>) -> Self {
+    pub fn new(state: AppState, spotify_api: Arc<dyn SpotifyApiClient + Send + Sync>, settings: SpotSettings) -> Self {
         let services = AppServices { spotify_api };
         let state = RefCell::new(state);
-        Self { state, services }
+        Self { state, services, settings }
     }
 
     pub fn get_spotify(&self) -> Arc<dyn SpotifyApiClient + Send + Sync> {

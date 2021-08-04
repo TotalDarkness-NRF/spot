@@ -1,7 +1,7 @@
 use crate::api::clear_user_cache;
 use crate::app::models::{PlaylistDescription, PlaylistSummary};
 use crate::app::state::{LoginAction, PlaybackAction, ScreenName};
-use crate::app::{credentials, AppEvent, BrowserAction, BrowserEvent};
+use crate::app::{credentials, BrowserAction};
 use crate::app::{ActionDispatcher, AppModel};
 use std::ops::Deref;
 use std::rc::Rc;

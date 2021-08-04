@@ -24,7 +24,6 @@ pub mod credentials;
 pub mod loader;
 
 pub struct App {
-    settings: SpotSettings,
     builder: gtk::Builder,
     components: Vec<Box<dyn EventListener>>,
     model: Rc<AppModel>,
@@ -41,15 +40,14 @@ impl App {
     ) -> Self {
         let state = AppState::new();
         let spotify_client = Arc::new(CachedSpotifyClient::new());
-        let model = Rc::new(AppModel::new(state, spotify_client));
+        let model = Rc::new(AppModel::new(state, spotify_client, settings));
 
         let components: Vec<Box<dyn EventListener>> = vec![
-            App::make_player_notifier(&settings, sender.clone()),
+            App::make_player_notifier(&model.settings, sender.clone()),
             App::make_dbus(Rc::clone(&model), sender.clone()),
         ];
 
         Self {
-            settings,
             builder,
             components,
             model,
@@ -66,7 +64,7 @@ impl App {
         let dispatcher = Box::new(ActionDispatcherImpl::new(sender.clone(), worker.clone()));
 
         let mut components: Vec<Box<dyn EventListener>> = vec![
-            App::make_window(&self.settings, builder, Rc::clone(model), worker.clone()),
+            App::make_window(&self.model.settings, builder, Rc::clone(model), worker.clone()),
             App::make_selection_editor(builder, Rc::clone(model), dispatcher.box_clone()),
             App::make_playback_control(builder, Rc::clone(model), dispatcher.box_clone()),
             App::make_playback_info(
