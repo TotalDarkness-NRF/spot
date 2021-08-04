@@ -1,5 +1,6 @@
 use crate::player::{AudioBackend, SpotifyPlayerSettings};
 use gio::prelude::SettingsExt;
+use gio::Settings;
 use librespot::playback::config::Bitrate;
 
 const SETTINGS: &str = "dev.alextren.Spot";
@@ -80,7 +81,11 @@ impl SpotSettings {
             window: WindowGeometry::new_from_gsettings(),
         })
     }
-}
+
+    pub fn get_setting_schema() -> Settings {
+        gio::Settings::new(SETTINGS)
+    }
+ }
 
 impl Default for SpotSettings {
     fn default() -> Self {
