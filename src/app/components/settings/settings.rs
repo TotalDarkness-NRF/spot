@@ -1,4 +1,5 @@
 use gladis::Gladis;
+use glib::signal;
 use gtk::prelude::*;
 use std::rc::Rc;
 
@@ -10,7 +11,7 @@ use super::SettingsModel;
 #[derive(Clone, Gladis)]
 struct SettingsWidget {
     root: gtk::Widget,
-    listbox: gtk::ListBox,
+    grid: gtk::Grid,
 }
 
 impl SettingsWidget {
@@ -23,17 +24,26 @@ impl SettingsWidget {
 pub struct Settings {
     widget: SettingsWidget,
     model: Rc<SettingsModel>,
-    children: Vec<Box<dyn EventListener>>,
 }
 
 impl Settings {
     pub fn new(model: Rc<SettingsModel>) -> Self {
         let widget = SettingsWidget::new();
-        Self {
-            widget,
-            model,
-            children: vec![],
-        }
+        let grid = &widget.grid;
+        grid.set_halign(gtk::Align::Center);
+        grid.set_valign(gtk::Align::Center);
+        let label = gtk::Label::new(Some("Dark Mode"));
+        let switch = gtk::Switch::new();
+        switch.connect_changed_active(
+            clone!(@weak model => @default-return (), move |switch| {
+                println!("{}", switch.state());
+            }),
+        );
+
+        grid.set_column_spacing(20);
+        grid.attach(&label, 0, 0, 1, 1);
+        grid.attach(&switch, 1, 0, 1, 1);
+        Self { widget, model }
     }
 }
 
@@ -43,15 +53,13 @@ impl Component for Settings {
     }
 
     fn get_children(&mut self) -> Option<&mut Vec<Box<dyn EventListener>>> {
-        Some(&mut self.children)
+        None
     }
 }
 
 impl EventListener for Settings {
     fn on_event(&mut self, event: &AppEvent) {
-        if let AppEvent::PlaybackEvent(PlaybackEvent::TrackChanged(_)) = event {
-            
-        }
+        if let AppEvent::PlaybackEvent(PlaybackEvent::TrackChanged(_)) = event {}
         self.broadcast_event(event);
     }
 }
