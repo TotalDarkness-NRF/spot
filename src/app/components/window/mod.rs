@@ -132,6 +132,7 @@ impl MainWindow {
 
 impl EventListener for MainWindow {
     fn on_event(&mut self, event: &AppEvent) {
+        // TODO make event to change size
         match event {
             AppEvent::Started => self.start(),
             AppEvent::Raised => self.raise(),

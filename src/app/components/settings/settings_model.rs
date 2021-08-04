@@ -1,6 +1,7 @@
 use std::ops::Deref;
 use std::rc::Rc;
 use std::sync::Arc;
+use std::cell::{Ref, RefMut};
 
 use crate::app::components::{SelectionTool, SelectionToolsModel};
 use crate::app::state::{SelectionContext, SelectionState};
@@ -21,8 +22,12 @@ impl SettingsModel {
         }
     }
 
-    pub fn settings(&self) -> &SpotSettings {
-        &self.app_model.settings
+    pub fn settings(&self) -> Ref<'_, SpotSettings> {
+        self.app_model.get_settings()
+    }
+
+    pub fn settings_mut(&self) -> RefMut<'_, SpotSettings> {
+        self.app_model.get_settings_mut()
     }
 }
 
