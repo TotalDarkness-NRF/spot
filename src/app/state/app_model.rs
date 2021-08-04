@@ -2,7 +2,7 @@ use crate::api::SpotifyApiClient;
 use crate::app::state::*;
 use crate::settings::SpotSettings;
 use ref_filter_map::*;
-use std::cell::{Ref, RefCell};
+use std::cell::{Ref, RefCell, RefMut};
 use std::sync::Arc;
 
 pub struct AppServices {
@@ -12,13 +12,14 @@ pub struct AppServices {
 pub struct AppModel {
     state: RefCell<AppState>,
     services: AppServices,
-    pub settings: SpotSettings,
+    settings: RefCell<SpotSettings>,
 }
 
 impl AppModel {
     pub fn new(state: AppState, spotify_api: Arc<dyn SpotifyApiClient + Send + Sync>, settings: SpotSettings) -> Self {
         let services = AppServices { spotify_api };
         let state = RefCell::new(state);
+        let settings = RefCell::new(settings);
         Self { state, services, settings }
     }
 
@@ -28,6 +29,14 @@ impl AppModel {
 
     pub fn get_state(&self) -> Ref<'_, AppState> {
         self.state.borrow()
+    }
+
+    pub fn get_settings(&self) -> Ref<'_, SpotSettings> {
+        self.settings.borrow()
+    }
+
+    pub fn get_settings_mut(&self) -> RefMut<'_, SpotSettings> {
+        self.settings.borrow_mut()
     }
 
     pub fn map_state<T: 'static, F: FnOnce(&AppState) -> &T>(&self, map: F) -> Ref<'_, T> {
