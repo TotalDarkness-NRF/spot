@@ -255,7 +255,7 @@ impl EventListener for PlaybackControl {
             AppEvent::PlaybackEvent(PlaybackEvent::RepeatModeChanged(mode)) => {
                 self.update_repeat(mode);
             }
-            AppEvent::PlaybackEvent(PlaybackEvent::PlaybackStopped) => {
+            AppEvent::PlaybackEvent(PlaybackEvent::PlaybackStopped) | AppEvent::MiniPlayerShown => {
                 self.update_playing();
                 self.update_current_info();
             }

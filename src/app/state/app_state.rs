@@ -17,6 +17,8 @@ pub enum AppAction {
     ShowNotification(String),
     HideNotification,
     ViewNowPlaying,
+    ViewMiniPlayer,
+    DestroyMiniPlayer,
     // cross-state actions
     QueueSelection,
     DequeueSelection,
@@ -58,6 +60,8 @@ pub enum AppEvent {
     NotificationShown(String),
     NotificationHidden,
     NowPlayingShown,
+    MiniPlayerShown,
+    MiniPlayerDestroy,
 }
 
 pub struct AppState {
@@ -92,6 +96,8 @@ impl AppState {
             AppAction::ShowNotification(c) => vec![AppEvent::NotificationShown(c)],
             AppAction::HideNotification => vec![AppEvent::NotificationHidden],
             AppAction::ViewNowPlaying => vec![AppEvent::NowPlayingShown],
+            AppAction::ViewMiniPlayer => vec![AppEvent::MiniPlayerShown],
+            AppAction::DestroyMiniPlayer => vec![AppEvent::MiniPlayerDestroy],
             AppAction::Raise => vec![AppEvent::Raised],
             AppAction::QueueSelection => {
                 for track in self.selection.take_selection() {
