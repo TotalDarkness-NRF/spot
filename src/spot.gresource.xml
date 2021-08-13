@@ -15,6 +15,9 @@
     <!-- details -->
     <file alias="components/details.css">app/components/details/details.css</file>
     <file alias="components/details.ui">app/components/details/details.ui</file>
+    <!-- mini player -->
+    <file alias="components/mini_player.css">app/components/mini_player/mini_player.css</file>
+    <file alias="components/mini_player.ui">app/components/mini_player/mini_player.ui</file>
     <!-- playlist details -->
     <file alias="components/playlist_details.css">app/components/playlist_details/playlist_details.css</file>
     <file alias="components/playlist_details.ui">app/components/playlist_details/playlist_details.ui</file>

@@ -1,0 +1,13 @@
+.mini_player button.album__cover {
+  padding: 0;
+  border-radius: 0;
+}
+
+.mini__player label.album__title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.mini_player label.album__artist {
+  font-size: 14px;
+}
