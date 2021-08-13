@@ -26,6 +26,9 @@ pub use playlist::*;
 mod login;
 pub use login::*;
 
+mod mini_player;
+pub use mini_player::*;
+
 mod player_notifier;
 pub use player_notifier::PlayerNotifier;
 
