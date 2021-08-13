@@ -53,15 +53,15 @@ impl NowPlaying {
     }
 
     fn update_mini_player(&self) {
-        self.mini_player
-            .as_ref()
-            .map(|player| player.update_current_info());
+        if let Some(player) = self.mini_player.as_ref() {
+            player.update_current_info()
+        }
     }
 
     fn update_mini_player_events(&mut self, event: &AppEvent) {
-        self.mini_player
-            .as_mut()
-            .map(|player| player.update_controls(event));
+        if let Some(player) = self.mini_player.as_mut() {
+            player.update_controls(event)
+        }
     }
 }
 

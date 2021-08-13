@@ -38,7 +38,10 @@ impl ScreenFactory {
             Rc::clone(&self.app_model),
             self.dispatcher.box_clone(),
         ));
-        SelectionTools::new(NowPlaying::new(Rc::clone(&model), self.worker.clone()), model)
+        SelectionTools::new(
+            NowPlaying::new(Rc::clone(&model), self.worker.clone()),
+            model,
+        )
     }
 
     pub fn make_album_details(&self, id: String) -> impl ListenerComponent {

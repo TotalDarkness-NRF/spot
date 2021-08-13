@@ -18,16 +18,13 @@ impl MiniPlayer {
     pub fn new(model: Rc<NowPlayingModel>, worker: Worker) -> Self {
         let builder = gtk::Builder::from_resource(resource!("/components/mini_player.ui"));
 
-        let mini_player: libhandy::Window = builder.object("mini_player").unwrap();
-        // TODO player controls dont update
+        let player: libhandy::Window = builder.object("mini_player").unwrap();
         let controls: Box<dyn EventListener> = crate::app::App::make_playback_control(
             &builder,
             model.app_model.clone(),
             model.dispatcher.box_clone(),
         );
         let close_button: gtk::Button = builder.object("close_button").unwrap();
-
-        let player = mini_player.clone();
 
         player.connect_destroy(clone!(@weak model => move |_| {
             model.dispatcher.dispatch(AppAction::DestroyMiniPlayer);
@@ -56,8 +53,7 @@ impl MiniPlayer {
 
         let current_song_info = builder.object("current_song_info").unwrap();
         let playing_image = builder.object("playing_image").unwrap();
-
-        // TODO have text wrapping work
+        
         // TODO have pin on top button
 
         Self {
