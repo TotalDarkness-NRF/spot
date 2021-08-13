@@ -16,8 +16,8 @@ use crate::app::{ActionDispatcher, AppAction, AppEvent, AppModel, AppState, List
 use crate::{api::SpotifyApiClient, app::components::SimpleSelectionTool};
 
 pub struct NowPlayingModel {
-    app_model: Rc<AppModel>,
-    dispatcher: Box<dyn ActionDispatcher>,
+    pub app_model: Rc<AppModel>,
+    pub dispatcher: Box<dyn ActionDispatcher>,
 }
 
 impl NowPlayingModel {
@@ -32,7 +32,7 @@ impl NowPlayingModel {
         self.app_model.get_state()
     }
 
-    fn queue(&self) -> Ref<'_, PlaybackState> {
+    pub fn queue(&self) -> Ref<'_, PlaybackState> {
         Ref::map(self.state(), |s| &s.playback)
     }
 
